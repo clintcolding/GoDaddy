@@ -2,7 +2,7 @@
 
 To get started with these functions you'll need a production [GoDaddy API Key](https://developer.godaddy.com/keys/).
 
-The API Key and Secret are set as the default parameter values for `Get-GoDaddyDNS` and `Set-GoDaddyDNS`. Make sure to clear or change these values.
+The API Key and Secret are set as the default parameter values for `Get-GoDaddyDNS`, `Set-GoDaddyDNS` and `Find-Domain`. Make sure to clear or change these values.
 
 ![API Key/Secret Values](https://s6.postimg.org/n7i2cunhd/pssnip.png)
 
@@ -11,3 +11,10 @@ The API Key and Secret are set as the default parameter values for `Get-GoDaddyD
 To import the GoDaddy module use `Import-Module .\GoDaddy.psd1`.
 
 To autoload the module, copy the GoDaddy folder to `%USERPROFILE%\Documents\WindowsPowershell\Modules`.
+
+##Work in Progress
+
+Features, changes and fixes:
+
+- [ ] Rework how the API secret/key is added
+- [ ] Add certificate functions
