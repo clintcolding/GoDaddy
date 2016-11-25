@@ -14,7 +14,5 @@ To autoload the module, copy the GoDaddy folder to `%USERPROFILE%\Documents\Wind
 
 ##Work in Progress
 
-Features, changes and fixes:
-
 - [ ] Rework how the API secret/key is added
 - [ ] Add certificate functions
