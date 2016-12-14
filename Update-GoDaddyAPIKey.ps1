@@ -31,10 +31,9 @@ function Update-GoDaddyAPIKey
     {
         # Get and set module path
         
-        $Paths = @()
-        
         $Path = Get-Module GoDaddyDNS | Select-Object Path
         $Path = ($Path.Path).TrimEnd('GoDaddyDNS.psd1')
+        $Paths = @()
         $Paths += ($Path + "Get-GoDaddyDNS.ps1")
         $Paths += ($Path + "Set-GoDaddyDNS.ps1")
 
@@ -42,12 +41,21 @@ function Update-GoDaddyAPIKey
         {
             # Get current key
             
-            [string]$String = Select-String -Path $P -Pattern "Key="
-            $CurrentKey = ($String.Substring($String.IndexOf("'")+1)).TrimEnd(",","'")
+            [string]$KeyString = Select-String -Path $P -Pattern "Key="
+            $CurrentKey = ($KeyString.Substring($KeyString.IndexOf("'")+1)).TrimEnd(",","'")
+
+            # Get current secret
+            
+            [string]$SecretString = Select-String -Path $P -Pattern "Secret="
+            $CurrentSecret = ($SecretString.Substring($SecretString.IndexOf("'")+1)).TrimEnd("'")
 
             # Replace current key with new key
 
             $Updated = (Get-Content $P).Replace($CurrentKey,$Key)
+
+            # Replace current key with new key
+
+            $Updated = $Updated.Replace($CurrentSecret,$Secret)
 
             # Update function
 
