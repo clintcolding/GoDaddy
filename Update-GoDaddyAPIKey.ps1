@@ -14,24 +14,26 @@ function Update-GoDaddyAPIKey
 
     Param
     (
-        [Parameter(Mandatory=$true,
-                   Position=0)]
+        [Parameter(Mandatory=$true)]
         [string]$Key,
 
-        [Parameter(Mandatory=$true,
-                   Position=1)]
+        [Parameter(Mandatory=$true)]
         [string]$Secret
     )
 
     Begin
     {
-        
     }
     Process
     {
+        if ($Key -eq $Secret) {
+            Write-Error 'Key and Secret cannot be the same.'
+            break
+        }
+        
         # Get and set module path
         
-        $Paths = ((Get-Module GoDaddyDNS | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get*' -or $_.Name -like 'Set*'} | Select-Object FullName).FullName
+        $Paths = ((Get-Module GoDaddyDNS | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddy*' -or $_.Name -like 'Set-GoDaddy*'} | Select-Object FullName).FullName
 
         foreach ($Path in $Paths)
         {
