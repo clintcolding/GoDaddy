@@ -33,7 +33,7 @@ function Update-GoDaddyAPIKey
         
         # Get and set module path
         
-        $Paths = ((Get-Module GoDaddyDNS | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddy*' -or $_.Name -like 'Set-GoDaddy*'} | Select-Object FullName).FullName
+        $Paths = ((Get-Module GoDaddy | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddy*' -or $_.Name -like 'Set-GoDaddy*'} | Select-Object FullName).FullName
 
         foreach ($Path in $Paths)
         {
