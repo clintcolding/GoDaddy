@@ -31,7 +31,7 @@ function Update-GoDaddyAPIKey
             break
         }
         
-        # Get and set module path
+        # Get module path
         
         $Paths = ((Get-Module GoDaddy | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddy*' -or $_.Name -like 'Set-GoDaddy*'} | Select-Object FullName).FullName
 
