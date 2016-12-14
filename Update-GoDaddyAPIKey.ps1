@@ -31,27 +31,23 @@ function Update-GoDaddyAPIKey
     {
         # Get and set module path
         
-        $Path = Get-Module GoDaddyDNS | Select-Object Path
-        $Path = ($Path.Path).TrimEnd('GoDaddyDNS.psd1')
-        $Paths = @()
-        $Paths += ($Path + "Get-GoDaddyDNS.ps1")
-        $Paths += ($Path + "Set-GoDaddyDNS.ps1")
+        $Paths = ((Get-Module GoDaddyDNS | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get*' -or $_.Name -like 'Set*'} | Select-Object FullName).FullName
 
-        foreach ($P in $Paths)
+        foreach ($Path in $Paths)
         {
             # Get current key
             
-            [string]$KeyString = Select-String -Path $P -Pattern "Key="
+            [string]$KeyString = Select-String -Path $Path -Pattern "Key="
             $CurrentKey = ($KeyString.Substring($KeyString.IndexOf("'")+1)).TrimEnd(",","'")
 
             # Get current secret
             
-            [string]$SecretString = Select-String -Path $P -Pattern "Secret="
+            [string]$SecretString = Select-String -Path $Path -Pattern "Secret="
             $CurrentSecret = ($SecretString.Substring($SecretString.IndexOf("'")+1)).TrimEnd("'")
 
             # Replace current key with new key
 
-            $Updated = (Get-Content $P).Replace($CurrentKey,$Key)
+            $Updated = (Get-Content $Path).Replace($CurrentKey,$Key)
 
             # Replace current key with new key
 
@@ -59,7 +55,7 @@ function Update-GoDaddyAPIKey
 
             # Update function
 
-            Set-Content -Path $P -Value $Updated
+            Set-Content -Path $Path -Value $Updated
         }
     }
     End
