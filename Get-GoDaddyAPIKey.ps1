@@ -14,7 +14,6 @@ function Get-GoDaddyAPIKey
 
     Param
     (
-
     )
 
     Begin
@@ -24,7 +23,7 @@ function Get-GoDaddyAPIKey
     {       
         # Get module path
         
-        $Paths = ((Get-Module GoDaddyDNS | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddyDNS*' -or $_.Name -like 'Set-GoDaddyDNS*' -or $_.Name -like 'Find-*'} | Select-Object FullName).FullName
+        $Paths = ((Get-Module GoDaddy | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddyDNS*' -or $_.Name -like 'Set-GoDaddyDNS*' -or $_.Name -like 'Find-*'} | Select-Object FullName).FullName
 
         foreach ($Path in $Paths)
         {
