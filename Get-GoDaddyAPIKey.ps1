@@ -41,6 +41,7 @@ function Get-GoDaddyAPIKey
                         Command = ($Path | Get-ChildItem -Name).TrimEnd(".ps1")
                         Key     = $CurrentKey
                         Secret  = $CurrentSecret
+                        Path    = $Path
                     }
             
             $Obj=New-Object -TypeName PSObject -Property $Prop
