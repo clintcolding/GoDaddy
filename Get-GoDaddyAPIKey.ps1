@@ -1,12 +1,15 @@
 ﻿<#
 .Synopsis
-   Short description
+   Returns the current API key/secret pair.
 .DESCRIPTION
-   Long description
+   Returns the current API key/secret pair being used by the GoDaddy module.
 .EXAMPLE
-   Example of how to use this cmdlet
-.EXAMPLE
-   Another example of how to use this cmdlet
+   PS C:\> Get-GoDaddyAPIKey
+
+   Command        Key   Secret   Path                                        
+   -------        ---   ------   ----                                        
+   Get-GoDaddyDNS mykey mysecret C:\Users\ccolding\Documents\WindowsPowerShell\Modules\Get-GoDaddyDNS.ps1
+   Set-GoDaddyDNS mykey mysecret C:\Users\ccolding\Documents\WindowsPowerShell\Modules\Set-GoDaddyDNS.ps1
 #>
 function Get-GoDaddyAPIKey
 {

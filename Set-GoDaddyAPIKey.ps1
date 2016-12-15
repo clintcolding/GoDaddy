@@ -1,12 +1,15 @@
 ﻿<#
 .Synopsis
-   Short description
+   Updates the API key/secret pair.
 .DESCRIPTION
-   Long description
+   Updates the API key/secret pair used by the GoDaddy module.
 .EXAMPLE
-   Example of how to use this cmdlet
-.EXAMPLE
-   Another example of how to use this cmdlet
+   PS C:\> Set-GoDaddyAPIKey mykey mysecret
+
+   Command        Key   Secret  
+   -------        ---   ------  
+   Get-GoDaddyDNS mykey mysecret
+   Set-GoDaddyDNS mykey mysecret
 #>
 function Set-GoDaddyAPIKey
 {
