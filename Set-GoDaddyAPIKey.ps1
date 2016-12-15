@@ -60,7 +60,7 @@ function Set-GoDaddyAPIKey
             Set-Content -Path $Path -Value $Updated
         }
 
-
+        Get-GoDaddyAPIKey
     }
     End
     {
