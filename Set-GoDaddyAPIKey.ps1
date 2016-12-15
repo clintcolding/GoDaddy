@@ -14,10 +14,12 @@ function Set-GoDaddyAPIKey
 
     Param
     (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true,
+                   Position=0)]
         [string]$Key,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true,
+                   Position=1)]
         [string]$Secret
     )
 
@@ -31,25 +33,21 @@ function Set-GoDaddyAPIKey
             break
         }
         
-        # Get module path
-        
-        $Paths = ((Get-Module GoDaddy | select ModuleBase).ModuleBase | Get-ChildItem | Where-Object {$_.Name -like 'Get-GoDaddy*' -or $_.Name -like 'Set-GoDaddy*' -or $_.Name -like 'Find-*'} | Select-Object FullName).FullName
+        $Var = Get-GoDaddyAPIKey
 
-        foreach ($Path in $Paths)
+        foreach ($Cmd in $Var)
         {
             # Get current key
             
-            [string]$KeyString = Select-String -Path $Path -Pattern "Key="
-            $CurrentKey = ($KeyString.Substring($KeyString.IndexOf("'")+1)).TrimEnd(",","'")
+            $CurrentKey = $Cmd.Key
 
             # Get current secret
             
-            [string]$SecretString = Select-String -Path $Path -Pattern "Secret="
-            $CurrentSecret = ($SecretString.Substring($SecretString.IndexOf("'")+1)).TrimEnd("'")
+            $CurrentSecret = $Cmd.Secret
 
             # Replace current key with new key
 
-            $Updated = (Get-Content $Path).Replace($CurrentKey,$Key)
+            $Updated = (Get-Content $Cmd.Path).Replace($CurrentKey,$Key)
 
             # Replace current key with new key
 
@@ -57,7 +55,7 @@ function Set-GoDaddyAPIKey
 
             # Update function
 
-            Set-Content -Path $Path -Value $Updated
+            Set-Content -Path $Cmd.Path -Value $Updated
         }
 
         Get-GoDaddyAPIKey
