@@ -33,27 +33,19 @@ function Set-GoDaddyAPIKey
             break
         }
         
-        $Var = Get-GoDaddyAPIKey
+        $Data = Get-GoDaddyAPIKey
 
-        foreach ($Cmd in $Var)
+        foreach ($Entry in $Data)
         {
-            # Get current key
-            
-            $CurrentKey = $Cmd.Key
+            # Replace current key with new key
 
-            # Get current secret
-            
-            $CurrentSecret = $Cmd.Secret
+            $Updated = (Get-Content $Entry.Path).Replace($Entry.Key,$Key)
 
             # Replace current key with new key
 
-            $Updated = (Get-Content $Cmd.Path).Replace($CurrentKey,$Key)
+            $Updated = $Updated.Replace($Entry.Secret,$Secret)
 
-            # Replace current key with new key
-
-            $Updated = $Updated.Replace($CurrentSecret,$Secret)
-
-            # Update function
+            # Update functions
 
             Set-Content -Path $Cmd.Path -Value $Updated
         }
