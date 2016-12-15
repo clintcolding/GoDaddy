@@ -47,10 +47,10 @@ function Set-GoDaddyAPIKey
 
             # Update functions
 
-            Set-Content -Path $Cmd.Path -Value $Updated
+            Set-Content -Path $Entry.Path -Value $Updated
         }
 
-        Get-GoDaddyAPIKey
+        Get-GoDaddyAPIKey | Select-Object Command,Key,Secret
     }
     End
     {
