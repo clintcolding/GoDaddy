@@ -1,4 +1,4 @@
-﻿<#
+<#
 .Synopsis
    Retrieves DNS records.
 .DESCRIPTION
@@ -39,9 +39,9 @@ function Get-GoDaddyDNS
         [Parameter(ParameterSetName='Optional')]
         [string]$Name,
 
-        [string]$Key='VVJ5Su5y_R5KQ2tW8fUWw2yqyftgCRA',
+        [string]$Key='9Zw1c8DDSui_AoXPHHnwDz23ZDhcybf79x',
 
-        [string]$Secret='R5KTt7RXBHJR9RCMn7jpkc'
+        [string]$Secret='AoXSQsF3rMCD1EQsVmRBB4'
     )
 
     Begin
@@ -56,7 +56,7 @@ function Get-GoDaddyDNS
             Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Get -Headers $Headers | ConvertFrom-Json
         }
         catch [System.Net.WebException]{
-            Write-Warning 'API key and/or secret is incorrect for Get-GoDaddyDNS.'
+            Write-Error 'API key and/or secret is incorrect for Get-GoDaddyDNS.'
         }
     }
     End

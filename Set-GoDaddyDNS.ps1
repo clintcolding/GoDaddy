@@ -1,4 +1,4 @@
-﻿<#
+<#
 .Synopsis
    Creates or updates DNS records.
 .DESCRIPTION
@@ -34,9 +34,9 @@ function Set-GoDaddyDNS
         [Parameter(Position=4)]
         [int]$TTL=3600,
 
-        [string]$Key='VVJ5Su5y_R5KQ2tW8fUWw2yqyftgCRA',
+        [string]$Key='9Zw1c8DDSui_AoXPHHnwDz23ZDhcybf79x',
 
-        [string]$Secret='R5KTt7RXBHJR9RCMn7jpkc'
+        [string]$Secret='AoXSQsF3rMCD1EQsVmRBB4'
     )
 
     Begin
@@ -54,7 +54,7 @@ function Set-GoDaddyDNS
             Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Put -Headers $Headers -Body $Body -ContentType "application/json" | Out-Null
         }
         catch [System.Net.WebException]{
-            Write-Warning 'API key and/or secret is incorrect for Set-GoDaddyDNS.'
+            Write-Error 'API key and/or secret is incorrect for Set-GoDaddyDNS.'
         }
 
         Get-GoDaddyDNS -Domain $Domain -Type $Type -Name $Name

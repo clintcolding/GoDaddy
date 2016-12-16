@@ -54,8 +54,10 @@ function Set-GoDaddyAPIKey
         }
 
         Get-GoDaddyAPIKey | Select-Object Command,Key,Secret
+
     }
     End
     {
+        Import-Module -Force (Get-Module GoDaddy | Select ModuleBase).ModuleBase -Scope Global
     }
 }
