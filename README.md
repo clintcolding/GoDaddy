@@ -4,7 +4,7 @@ To get started with these functions you'll need a production [GoDaddy API Key](h
 
 The API Key and Secret are set as the default parameter values. These values can be changed by using 'Set-GoDaddyAPIKey'.
 
-[![GoDaddy Module Demo](http://img.youtube.com/vi/8vczfFLdK_Y/0.jpg)](http://www.youtube.com/watch?v=8vczfFLdK_Y)
+[![GoDaddy Module Demo](https://s6.postimg.org/3metixx7l/demoss.png)](http://www.youtube.com/watch?v=8vczfFLdK_Y)
 
 ##GoDaddy Module
 
