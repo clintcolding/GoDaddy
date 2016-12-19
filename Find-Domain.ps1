@@ -31,20 +31,17 @@ function Find-Domain
     (
         [Parameter(Mandatory=$true,
                    Position=0)]
-        [string]$Domain,
-
-        [string]$Key='VVJ5Su5y_R5KQ2tW8fUWw2yqyftgCRA',
-
-        [string]$Secret='R5KTt7RXBHJR9RCMn7jpkc'
+        [string]$Domain
     )
 
     Begin
     {
+        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
     }
     Process
     {
         $Headers = @{}
-        $Headers["Authorization"] = 'sso-key ' + $Key + ':' + $Secret
+        $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
 
         $Available = Invoke-WebRequest https://api.godaddy.com/v1/domains/available?domain=$Domain -Method Get -Headers $Headers | ConvertFrom-Json
 

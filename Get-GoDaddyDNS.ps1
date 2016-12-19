@@ -37,20 +37,17 @@ function Get-GoDaddyDNS
         [string]$Type,
 
         [Parameter(ParameterSetName='Optional')]
-        [string]$Name,
-
-        [string]$Key='9Zw1c8DDSui_AoXPHHnwDz23ZDhcybf79x',
-
-        [string]$Secret='AoXSQsF3rMCD1EQsVmRBB4'
+        [string]$Name
     )
 
     Begin
     {
+        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"   
     }
     Process
     {        
         $Headers = @{}
-        $Headers["Authorization"] = 'sso-key ' + $Key + ':' + $Secret
+        $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
         
         try{
             Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Get -Headers $Headers | ConvertFrom-Json

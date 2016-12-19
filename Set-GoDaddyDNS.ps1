@@ -32,20 +32,17 @@ function Set-GoDaddyDNS
         [ipaddress]$IP,
         
         [Parameter(Position=4)]
-        [int]$TTL=3600,
-
-        [string]$Key='9Zw1c8DDSui_AoXPHHnwDz23ZDhcybf79x',
-
-        [string]$Secret='AoXSQsF3rMCD1EQsVmRBB4'
+        [int]$TTL=3600
     )
 
     Begin
     {
+        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
     }
     Process
     {        
         $Headers = @{}
-        $Headers["Authorization"] = 'sso-key ' + $Key + ':' + $Secret
+        $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
 
         $Record = @{data="$IP";ttl=$TTL}
         $Body = ConvertTo-Json $Record
