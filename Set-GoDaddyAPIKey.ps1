@@ -31,33 +31,13 @@ function Set-GoDaddyAPIKey
     }
     Process
     {
-        if ($Key -eq $Secret) {
-            Write-Error 'Key and Secret cannot be the same.'
-            break
-        }
-        
-        $Data = Get-GoDaddyAPIKey
+        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
 
-        foreach ($Entry in $Data)
-        {
-            # Replace current key with new key
+        $apiKey | ForEach-Object {$_.key = $Key; $_.secret = $Secret}
 
-            $Updated = (Get-Content $Entry.Path).Replace($Entry.Key,$Key)
-
-            # Replace current key with new key
-
-            $Updated = $Updated.Replace($Entry.Secret,$Secret)
-
-            # Update functions
-
-            Set-Content -Path $Entry.Path -Value $Updated
-        }
-
-        Get-GoDaddyAPIKey | Select-Object Command,Key,Secret
-
+        $apiKey | Export-Csv "$PSScriptRoot\apiKey.csv"
     }
     End
     {
-        Import-Module -Force (Get-Module GoDaddy | Select ModuleBase).ModuleBase -Scope Global
     }
 }
