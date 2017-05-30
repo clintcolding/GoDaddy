@@ -14,7 +14,7 @@
 .EXAMPLE
    Get-GoDaddyDNS -Domain google.com -Type A -Name mail
 
-   This example will return all A records with the name mail for google.com.
+   This example will return all A records with the name mail for google.com. 
 #>
 function Get-GoDaddyDNS
 {
