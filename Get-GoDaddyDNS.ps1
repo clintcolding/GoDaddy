@@ -33,7 +33,7 @@ function Get-GoDaddyDNS
         [Parameter(ParameterSetName='Optional',
                    Mandatory=$true,
                    Position=1)]
-        [ValidateSet('A','CNAME','MX','TXT','NS','SRV','AAAA')]
+        [ValidateSet('A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'SRV', 'TXT')]
         [string]$Type,
 
         [Parameter(ParameterSetName='Optional')]
