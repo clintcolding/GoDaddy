@@ -1,14 +1,16 @@
 $Provider = @{
 
-    Frontier = @{
+    Comcast = @{                # Your ISP
         Services = @{
-            test = '96.254.141.248'
+            blog = '10.1.2.3'   # Your record name and IP
+            "@"  = '10.1.2.4'   # Your record name and IP
         }
     }
 
-    Level3 = @{
+    Level3 = @{                 # Your other ISP
         Services = @{
-            test = '66.199.7.189'
+            blog = '20.2.3.4'   # Your record name and IP
+            "@"  = '20.2.3.5'   # Your record name and IP
         }
     }
 }
