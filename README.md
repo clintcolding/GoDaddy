@@ -41,7 +41,7 @@ When invoking the command you specify the domain and ISP you wish to be active.
 - Next the records with matching names from the config.ps1 file will be filtered. 
 - Finally, `Set-GoDaddyDNS` will update the records listed with the IP corresponding to that ISP.
 
-So in the example `Failover-GoDaddyDNS -Domain clintcolding.com -ISP Comcast`, the DNS for blog.clintcolding.com will be set to 10.1.2.3 and clintcolding.com will be set to 10.1.2.4.
+In the example `Failover-GoDaddyDNS -Domain clintcolding.com -ISP Comcast`, the DNS for blog.clintcolding.com will be set to 10.1.2.3 and clintcolding.com will be set to 10.1.2.4.
 
 ## Work in Progress
 
