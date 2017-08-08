@@ -23,7 +23,17 @@ function Get-GoDaddyAPIKey
     }
     Process
     {       
-        Import-Csv "$PSScriptRoot\apiKey.csv"
+        ## Test if apiKey.csv exists, if so, return the contents.
+
+        if ((Test-Path "$PSScriptRoot\apiKey.csv") -eq $True) {
+            Import-Csv "$PSScriptRoot\apiKey.csv"
+        }
+
+        ## If Test-Path fails, write the following warning:
+
+        else {
+            Write-Warning -Message "API Key does not exist. Use Set-GoDaddyAPIKey to create one."
+        }
     }
     End
     {
