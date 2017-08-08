@@ -31,11 +31,14 @@ function Set-GoDaddyAPIKey
     }
     Process
     {
-        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
-
-        $apiKey | ForEach-Object {$_.key = $Key; $_.secret = $Secret}
-
-        $apiKey | Export-Csv "$PSScriptRoot\apiKey.csv"
+        $apiKey = @(
+            [PSCustomObject]@{
+                Key = "$Key"
+                Secret = "$Secret"
+            }
+        )
+        
+        $apiKey | Export-Csv -Path "$PSScriptRoot\apiKey.csv"
     }
     End
     {
