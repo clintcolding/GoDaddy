@@ -42,18 +42,19 @@ function Get-GoDaddyDNS
 
     Begin
     {
-        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"   
+        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
     }
     Process
-    {        
+    {     
         $Headers = @{}
         $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
         
-        try{
+        if ($Type) {
             Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
         }
-        catch [System.Net.WebException]{
-            Write-Error 'API key and/or secret is incorrect for Get-GoDaddyDNS.'
+
+        else {
+            Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
         }
     }
     End
