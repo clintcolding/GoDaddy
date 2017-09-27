@@ -1,50 +1,98 @@
 # Managing GoDaddy DNS with PowerShell
 
-> To get started with this module you'll need a production [GoDaddy API Key](https://developer.godaddy.com/keys/). To set the key/secret use `Set-GoDaddyAPIKey`.
+This module allows you to quickly view, create, and edit DNS entries within your GoDaddy account.
 
-## Installation
+## Using the GoDaddy DNS Module
+
+### Installation
 
 To install the GoDaddy module use `Import-Module .\GoDaddy.psd1`.
 
 To autoload the module, copy the GoDaddy folder to `%USERPROFILE%\Documents\WindowsPowershell\Modules`.
 
-## Using Failover-GoDaddyDNS
+### Configuring API Key
 
-`Failover-GoDaddyDNS` is designed to failover your DNS records from one ISP to another. 
+To get started with this module you'll need a production [GoDaddy API Key](https://developer.godaddy.com/keys/).
 
-> EXAMPLE: You host a website and have redundant ISP's, when your primary fails you want to quickly update your public DNS records to point to the secondary ISP.
+To set the key/secret pair, use `Set-GoDaddyAPIKey`:
 
-It works by defining your records and corresponding IP's for a given ISP in a config.ps1 file. The data is structured in a hashtable.
-
-```powershell
-$Provider = @{
-
-    Comcast = @{                # Your ISP
-        Services = @{
-            blog = '10.1.2.3'   # Your record name and IP
-            "@"  = '10.1.2.4'   # Your record name and IP
-        }
-    }
-
-    Level3 = @{                 # Your other ISP
-        Services = @{
-            blog = '20.2.3.4'   # Your record name and IP
-            "@"  = '20.2.3.5'   # Your record name and IP
-        }
-    }
-}
+``` console
+PS C:\> Set-GoDaddyAPIKey -Key 2s7Yn1f2dW_VrYQjtDRMhdqQhy5zUMd7r -Secret VrYT3z2eEW8tfPsNJViCRA
 ```
 
-When invoking the command you specify the domain and ISP you wish to be active. 
+To confirm, use `Get-GoDaddyAPIKey`:
 
-- First, all DNS records for the given domain are returned. 
-- Next the records with matching names from the config.ps1 file will be filtered. 
-- Finally, `Set-GoDaddyDNS` will update the records listed with the IP corresponding to that ISP.
+``` console
+PS C:\> Get-GoDaddyAPIKey
 
-In the example `Failover-GoDaddyDNS -Domain clintcolding.com -ISP Comcast`, the DNS for blog.clintcolding.com will be set to 10.1.2.3 and clintcolding.com will be set to 10.1.2.4.
+Key                               Secret
+---                               ------
+2s7Yn1f2dW_VrYQjtDRMhdqQhy5zUMd7r VrYT3z2eEW8tfPsNJViCRA
+```
 
-## Work in Progress
+### Using Get-GoDaddyDNS
 
-- [x] Rework how the API secret/key is added
-- [ ] Remove API secret/key in plain text
-- [ ] Add certificate functions
+Once your keys are configured you can use Get-GoDaddyDNS against any domain within your account:
+
+``` console
+PS C:\> Get-GoDaddyDNS clintcolding.com
+
+type  name           data                                                                  ttl
+----  ----           ----                                                                  ---
+A     @              192.30.252.153                                                        600
+A     @              192.30.252.154                                                        600
+CNAME email          email.secureserver.net                                               3600
+CNAME ftp            @                                                                    3600
+CNAME www            @                                                                    3600
+CNAME _domainconnect _domainconnect.gd.domaincontrol.com                                  3600
+MX    @              mailstore1.secureserver.net                                          3600
+MX    @              smtp.secureserver.net                                                3600
+TXT   @              google-site-verification=hgdhVcebTDIPAmTbCu2IZotxgpNNEPwBewoBR0unAzo 3600
+NS    @              ns53.domaincontrol.com                                               3600
+NS    @              ns54.domaincontrol.com                                               3600
+```
+
+You can also filter by type:
+
+``` console
+PS C:\> Get-GoDaddyDNS clintcolding.com -Type A
+
+type name data           ttl
+---- ---- ----           ---
+A    @    192.30.252.153 600
+A    @    192.30.252.154 600
+```
+
+Or by type AND name:
+
+``` console
+PS C:\> Get-GoDaddyDNS clintcolding.com -Type CNAME -Name 'www'
+
+type  name data  ttl
+----  ---- ----  ---
+CNAME www  @    3600
+```
+
+### Using Set-GoDaddyDNS
+
+Set-GoDaddyDNS allows you to create or update DNS records. Below we'll create a new A record for test.clintcolding.com with an IP of 10.10.10.10:
+
+``` console
+PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.10
+
+type name data         ttl
+---- ---- ----         ---
+A    test 10.10.10.10 3600
+```
+
+> You can also optionally define the TTL value using the `TTL` parameter.
+
+We can also update this record using the same command:
+
+``` console
+PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.11
+
+type name data         ttl
+---- ---- ----         ---
+A    test 10.10.10.11 3600
+```
