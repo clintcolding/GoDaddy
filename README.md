@@ -41,15 +41,7 @@ type  name           data                                                       
 ----  ----           ----                                                                  ---
 A     @              192.30.252.153                                                        600
 A     @              192.30.252.154                                                        600
-CNAME email          email.secureserver.net                                               3600
-CNAME ftp            @                                                                    3600
 CNAME www            @                                                                    3600
-CNAME _domainconnect _domainconnect.gd.domaincontrol.com                                  3600
-MX    @              mailstore1.secureserver.net                                          3600
-MX    @              smtp.secureserver.net                                                3600
-TXT   @              google-site-verification=hgdhVcebTDIPAmTbCu2IZotxgpNNEPwBewoBR0unAzo 3600
-NS    @              ns53.domaincontrol.com                                               3600
-NS    @              ns54.domaincontrol.com                                               3600
 ```
 
 You can also filter by type:
@@ -100,7 +92,7 @@ A    test 10.10.10.11 3600
 
 ### Using Set-GoDaddyDNS
 
-`Set-GoDaddyDNS` allows you to update DNS records. If you have multiple records with the same name and type, `Set-GoDaddyDNS` will overwrite them all with the new settings.
+`Set-GoDaddyDNS` allows you to update DNS records. If you have multiple records with the same name and type, `Set-GoDaddyDNS` will replace them with the new record.
 
 Using `Get-GoDaddyDNS` below, you can see we have two A records for *test*:
 
@@ -113,15 +105,7 @@ A     @              192.30.252.153                                             
 A     @              192.30.252.154                                                        600
 A     test           10.10.10.10                                                          3600
 A     test           10.10.10.11                                                          3600
-CNAME email          email.secureserver.net                                               3600
-CNAME ftp            @                                                                    3600
 CNAME www            @                                                                    3600
-CNAME _domainconnect _domainconnect.gd.domaincontrol.com                                  3600
-MX    @              mailstore1.secureserver.net                                          3600
-MX    @              smtp.secureserver.net                                                3600
-TXT   @              google-site-verification=hgdhVcebTDIPAmTbCu2IZotxgpNNEPwBewoBR0unAzo 3600
-NS    @              ns53.domaincontrol.com                                               3600
-NS    @              ns54.domaincontrol.com                                               3600
 ```
 
 Using `Set-GoDaddyDNS` to update the A records for *test* will replace both of them with our new record:
@@ -144,13 +128,5 @@ type  name           data                                                       
 A     @              192.30.252.153                                                        600
 A     @              192.30.252.154                                                        600
 A     test           10.10.10.12                                                          3600
-CNAME email          email.secureserver.net                                               3600
-CNAME ftp            @                                                                    3600
 CNAME www            @                                                                    3600
-CNAME _domainconnect _domainconnect.gd.domaincontrol.com                                  3600
-MX    @              mailstore1.secureserver.net                                          3600
-MX    @              smtp.secureserver.net                                                3600
-TXT   @              google-site-verification=hgdhVcebTDIPAmTbCu2IZotxgpNNEPwBewoBR0unAzo 3600
-NS    @              ns53.domaincontrol.com                                               3600
-NS    @              ns54.domaincontrol.com                                               3600
 ```
