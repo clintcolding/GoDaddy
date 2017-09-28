@@ -49,8 +49,12 @@ function Get-GoDaddyDNS
         $Headers = @{}
         $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
         
-        if ($Type) {
+        if ($Type -and $Name) {
             Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
+        }
+        
+        elseif ($Type) {
+            Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
         }
 
         else {
