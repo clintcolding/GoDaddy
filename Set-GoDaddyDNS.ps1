@@ -1,8 +1,8 @@
 <#
 .Synopsis
-   Creates or updates DNS records.
+   Updates DNS records.
 .DESCRIPTION
-   Creates or updates DNS records for domains hosted with GoDaddy.
+   Updates DNS records for domains hosted with GoDaddy. If multiple records exist with the same name and type, Set-GoDaddyDNS will replace them all.
 .EXAMPLE
    Set-GoDaddyDNS -Domain google.com -Type A -Name mail -IP 8.8.8.8
 
@@ -47,12 +47,7 @@ function Set-GoDaddyDNS
         $Record = @{data="$IP";ttl=$TTL}
         $Body = ConvertTo-Json $Record
 
-        try{
-            Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Put -Headers $Headers -Body $Body -ContentType "application/json" -UseBasicParsing | Out-Null
-        }
-        catch [System.Net.WebException]{
-            Write-Error 'API key and/or secret is incorrect for Set-GoDaddyDNS.'
-        }
+        Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Put -Headers $Headers -Body $Body -ContentType "application/json" -UseBasicParsing | Out-Null
 
         Get-GoDaddyDNS -Domain $Domain -Type $Type -Name $Name
     }
