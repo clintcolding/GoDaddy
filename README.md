@@ -32,7 +32,7 @@ Key                               Secret
 
 ### Using Get-GoDaddyDNS
 
-Once your keys are configured you can use Get-GoDaddyDNS against any domain within your account:
+Once your keys are configured you can use `Get-GoDaddyDNS` against any domain within your account:
 
 ``` console
 PS C:\> Get-GoDaddyDNS clintcolding.com
@@ -63,7 +63,7 @@ A    @    192.30.252.153 600
 A    @    192.30.252.154 600
 ```
 
-Or by type AND name:
+Or by type **AND** name:
 
 ``` console
 PS C:\> Get-GoDaddyDNS clintcolding.com -Type CNAME -Name 'www'
@@ -73,9 +73,9 @@ type  name data  ttl
 CNAME www  @    3600
 ```
 
-### Using Set-GoDaddyDNS
+### Using Add-GoDaddyDNS
 
-Set-GoDaddyDNS allows you to create or update DNS records. Below we'll create a new A record for test.clintcolding.com with an IP of 10.10.10.10:
+`Add-GoDaddyDNS` allows you to create new DNS records. Below we'll create a new A record for test.clintcolding.com with an IP of 10.10.10.10:
 
 ``` console
 PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.10
@@ -85,14 +85,72 @@ type name data         ttl
 A    test 10.10.10.10 3600
 ```
 
-> You can also optionally define the TTL value using the `TTL` parameter.
-
-We can also update this record using the same command:
+You can use `Add-GoDaddyDNS` to create records with the same name and type that point to different IPs:
 
 ``` console
-PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.11
+PS C:\> Add-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.11
 
 type name data         ttl
 ---- ---- ----         ---
+A    test 10.10.10.10 3600
 A    test 10.10.10.11 3600
+```
+
+> You can also optionally define the TTL value using the `TTL` parameter.
+
+### Using Set-GoDaddyDNS
+
+`Set-GoDaddyDNS` allows you to update DNS records. If you have multiple records with the same name and type, `Set-GoDaddyDNS` will overwrite them all with the new settings.
+
+Using `Get-GoDaddyDNS` below, you can see we have two A records for *test*:
+
+``` console
+PS C:\> Get-GoDaddyDNS clintcolding.com
+
+type  name           data                                                                  ttl
+----  ----           ----                                                                  ---
+A     @              192.30.252.153                                                        600
+A     @              192.30.252.154                                                        600
+A     test           10.10.10.10                                                          3600
+A     test           10.10.10.11                                                          3600
+CNAME email          email.secureserver.net                                               3600
+CNAME ftp            @                                                                    3600
+CNAME www            @                                                                    3600
+CNAME _domainconnect _domainconnect.gd.domaincontrol.com                                  3600
+MX    @              mailstore1.secureserver.net                                          3600
+MX    @              smtp.secureserver.net                                                3600
+TXT   @              google-site-verification=hgdhVcebTDIPAmTbCu2IZotxgpNNEPwBewoBR0unAzo 3600
+NS    @              ns53.domaincontrol.com                                               3600
+NS    @              ns54.domaincontrol.com                                               3600
+```
+
+Using `Set-GoDaddyDNS` to update the A records for *test* will replace both of them with our new record:
+
+``` console
+PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.12
+
+type name data         ttl
+---- ---- ----         ---
+A    test 10.10.10.12 3600
+```
+
+And confirmed with `Get-GoDaddyDNS`:
+
+``` console
+PS C:\> Get-GoDaddyDNS clintcolding.com
+
+type  name           data                                                                  ttl
+----  ----           ----                                                                  ---
+A     @              192.30.252.153                                                        600
+A     @              192.30.252.154                                                        600
+A     test           10.10.10.12                                                          3600
+CNAME email          email.secureserver.net                                               3600
+CNAME ftp            @                                                                    3600
+CNAME www            @                                                                    3600
+CNAME _domainconnect _domainconnect.gd.domaincontrol.com                                  3600
+MX    @              mailstore1.secureserver.net                                          3600
+MX    @              smtp.secureserver.net                                                3600
+TXT   @              google-site-verification=hgdhVcebTDIPAmTbCu2IZotxgpNNEPwBewoBR0unAzo 3600
+NS    @              ns53.domaincontrol.com                                               3600
+NS    @              ns54.domaincontrol.com                                               3600
 ```
