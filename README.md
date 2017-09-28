@@ -70,7 +70,7 @@ CNAME www  @    3600
 `Add-GoDaddyDNS` allows you to create new DNS records. Below we'll create a new A record for test.clintcolding.com with an IP of 10.10.10.10:
 
 ``` console
-PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.10
+PS C:\> Add-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.10
 
 type name data         ttl
 ---- ---- ----         ---
