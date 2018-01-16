@@ -67,10 +67,10 @@ CNAME www  @    3600
 
 ### Using Add-GoDaddyDNS
 
-`Add-GoDaddyDNS` allows you to create new DNS records. Below we'll create a new A record for test.clintcolding.com with an IP of 10.10.10.10:
+`Add-GoDaddyDNS` allows you to create new DNS records. Below we'll create a new A record for test.clintcolding.com with an Data of 10.10.10.10:
 
 ``` console
-PS C:\> Add-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.10
+PS C:\> Add-GoDaddyDNS clintcolding.com -Type A -Name test -Data 10.10.10.10
 
 type name data         ttl
 ---- ---- ----         ---
@@ -80,7 +80,7 @@ A    test 10.10.10.10 3600
 You can use `Add-GoDaddyDNS` to create records with the same name and type that point to different IPs:
 
 ``` console
-PS C:\> Add-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.11
+PS C:\> Add-GoDaddyDNS clintcolding.com -Type A -Name test -Data 10.10.10.11
 
 type name data         ttl
 ---- ---- ----         ---
@@ -111,7 +111,7 @@ CNAME www            @                                                          
 Using `Set-GoDaddyDNS` to update the A records for *test* will replace both of them with our new record:
 
 ``` console
-PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -IP 10.10.10.12
+PS C:\> Set-GoDaddyDNS clintcolding.com -Type A -Name test -Data 10.10.10.12
 
 type name data         ttl
 ---- ---- ----         ---
@@ -129,4 +129,36 @@ A     @              192.30.252.153                                             
 A     @              192.30.252.154                                                        600
 A     test           10.10.10.12                                                          3600
 CNAME www            @                                                                    3600
+```
+
+### Adding and Setting SRV Records
+
+When adding or setting SRV records, additional parameters are required. (Service, Priority, Protocol, Port, Weight)
+
+If you run `Add-GoDaddyDNS -Domain clintcolding.com -Type SRV`, you will be prompted for the remaining required parameters.
+
+Alternatively, you can explicitly name them all:
+
+``` console
+PS C:\> Add-GoDaddyDNS -Domain clintcolding.com -Type SRV -Name test -Data targethost.clintcolding.com -Service sip -Priority 10 -Protocol tcp -Port 5060 -Weight 10
+
+type     : SRV
+name     : test
+data     : targethost.clintcolding.com
+service  : _sip
+protocol : _tcp
+port     : 5060
+weight   : 10
+priority : 10
+ttl      : 3600
+```
+
+You can further confirm using `Get-GoDaddyDNS`:
+
+``` console
+PS C:\> Get-GoDaddyDNS clintcolding.com
+
+type  name  data                              ttl
+----  ----  ----                              ---
+SRV   test  targethost.test.clintcolding.com  3600
 ```
