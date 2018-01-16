@@ -29,7 +29,7 @@ function Set-GoDaddyDNS
 
         [Parameter(Mandatory=$true,
                    Position=3)]
-        [ipaddress]$IP,
+        [string]$Data,
         
         [Parameter(Position=4)]
         [int]$TTL=3600
@@ -44,7 +44,7 @@ function Set-GoDaddyDNS
         $Headers = @{}
         $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
 
-        $Record = @{data="$IP";ttl=$TTL}
+        $Record = @{data="$Data";ttl=$TTL}
         $Body = ConvertTo-Json $Record
 
         Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Put -Headers $Headers -Body $Body -ContentType "application/json" -UseBasicParsing | Out-Null

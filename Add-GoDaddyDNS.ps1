@@ -32,7 +32,7 @@ function Add-GoDaddyDNS
 
         [Parameter(Mandatory=$true,
                    Position=3)]
-        [ipaddress]$IP,
+        [string]$Data,
         
         [Parameter(Position=4)]
         [int]$TTL=3600
@@ -49,7 +49,7 @@ function Add-GoDaddyDNS
         $Headers["Content-Type"] = "application/json"
         $Headers["Accept"] = "application/json"
 
-        $Record = @{type="$Type";name="$Name";data="$IP";ttl=$TTL}
+        $Record = @{type="$Type";name="$Name";data="$Data";ttl=$TTL}
         $Body = "[" + (ConvertTo-Json $Record) + "]"
 
         Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records -Method Patch -Headers $Headers -Body $Body -UseBasicParsing | ConvertFrom-Json
