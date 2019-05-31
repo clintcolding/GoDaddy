@@ -126,5 +126,5 @@ PS C:\> Get-GoDaddyDNS clintcolding.com
 
 type  name  data                              ttl
 ----  ----  ----                              ---
-SRV   test  targethost.clintcolding.com  3600
+SRV   test  targethost.clintcolding.com       3600
 ```
