@@ -126,24 +126,30 @@ function Set-GoDaddyDNS
         $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
     }
     Process
-    {        
+    {
+        #---- Build authorization header ----#
         $Headers = @{}
         $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
         $headers["Content-Type"] = "application/json"
         $headers["Accept"] = "application/json"
 
+        #---- If SRV, build SRV record ----#
         if ($Type -eq "SRV") {
             $record = @{data="$Data";ttl=$TTL;priority=$PSBoundParameters.Priority;service="{0}" -f $PSBoundParameters.Service;protocol="{0}" -f $PSBoundParameters.Protocol;port=$PSBoundParameters.Port;weight=$PSBoundParameters.Weight}
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
+        #---- Build standard record ----#
         else {
             $record = @{data="$Data";ttl=$TTL}
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
 
-        Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Put -Headers $headers -Body $body -UseBasicParsing | Out-Null
-
-        Get-GoDaddyDNS -Domain $Domain -Type $Type -Name $Name
+        #---- Build the request URI based on domain ----#
+        $uri = "https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name"
+        #---- Make the request ----#
+        Invoke-WebRequest -Uri $uri -Method Put -Headers $headers -Body $body -UseBasicParsing | Out-Null
+        #---- Validate record with Get-GoDaddyDNS ----$
+        Get-GoDaddyDNS -Domain $Domain | Where-Object {$_.type -eq $Type -and $_.name -eq $Name}
     }
     End
     {
