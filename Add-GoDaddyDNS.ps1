@@ -129,25 +129,30 @@ function Add-GoDaddyDNS
         $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
     }
     Process
-    {        
+    {
+        #---- Build authorization header ----#
         $headers = @{}
         $headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
         $headers["Content-Type"] = "application/json"
         $headers["Accept"] = "application/json"
 
+        #---- If SRV, build SRV record ----#
         if ($Type -eq "SRV") {
             $record = @{type="$Type";name="$Name";data="$Data";ttl=$TTL;priority=$PSBoundParameters.Priority;service="{0}" -f $PSBoundParameters.Service;protocol="{0}" -f $PSBoundParameters.Protocol;port=$PSBoundParameters.Port;weight=$PSBoundParameters.Weight}
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
+        #---- Build standard record ----#
         else {
             $record = @{type="$Type";name="$Name";data="$Data";ttl=$TTL}
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
 
+        #---- Build the request URI based on domain ----#
         $uri = "https://api.godaddy.com/v1/domains/$Domain/records"
+        #---- Make the request ----#
         Invoke-WebRequest -Uri $uri -Method Patch -Headers $headers -Body $body -UseBasicParsing | ConvertFrom-Json
-
-        Get-GoDaddyDNS -Domain $Domain | Where-Object {$_.type -eq $Type -and $_.name -eq $Name}
+        #---- Validate record with Get-GoDaddyDNS ----$
+        Get-GoDaddyDNS -Domain $Domain | Where-Object {$_.type -eq $Type -and $_.name -eq $Name -and $_.data -eq $Data}
     }
     End
     {
