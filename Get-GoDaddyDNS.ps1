@@ -8,60 +8,43 @@
    
    This example will return all DNS records for google.com.
 .EXAMPLE
-   Get-GoDaddyDNS -Domain google.com -Type A
+   Get-GoDaddyDNS -Domain google.com | Where-Object {$_.Type -eq "A"}
 
    This example will return all A records for google.com.
-.EXAMPLE
-   Get-GoDaddyDNS -Domain google.com -Type A -Name mail
-
-   This example will return all A records with the name mail for google.com. 
 #>
 function Get-GoDaddyDNS
 {
-    [CmdletBinding(DefaultParameterSetName='Default')]
-
     Param
     (
-        [Parameter(ParameterSetName='Default',
-                   Mandatory=$true,
+        [Parameter(Mandatory=$true,
                    Position=0)]
-        [Parameter(ParameterSetName='Optional',
-                   Mandatory=$true,
-                   Position=0)]
-        [string]$Domain,
-
-        [Parameter(ParameterSetName='Optional',
-                   Mandatory=$true,
-                   Position=1)]
-        [ValidateSet('A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'SRV', 'TXT')]
-        [string]$Type,
-
-        [Parameter(ParameterSetName='Optional')]
-        [string]$Name
+        [string]$Domain
     )
 
-    Begin
-    {
+    Begin {
         $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
     }
-    Process
-    {     
-        $Headers = @{}
-        $Headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
+    Process {
+        #---- Build authorization header ----#
+        $headers = @{}
+        $headers["Authorization"] = 'sso-key ' + $apiKey.key + ':' + $apiKey.secret
         
-        if ($Type -and $Name) {
-            Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type/$Name -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
-        }
-        
-        elseif ($Type) {
-            Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records/$Type -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
-        }
+        #---- Build the request URI based on domain ----#
+        $uri = "https://api.godaddy.com/v1/domains/$Domain/records"
 
-        else {
-            Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records -Method Get -Headers $Headers -UseBasicParsing | ConvertFrom-Json
+        #---- Make the request ----#
+        $request = Invoke-WebRequest -Uri $uri -Method Get -Headers $headers -UseBasicParsing | ConvertFrom-Json
+
+        #---- Convert the request data into an object ----#
+        foreach ($item in $request) {
+            [PSCustomObject]@{
+                data = $item.data
+                name = $item.name
+                ttl  = $item.ttl
+                type = $item.type
+            }
         }
     }
-    End
-    {
+    End {
     }
 }
