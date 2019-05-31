@@ -144,9 +144,10 @@ function Add-GoDaddyDNS
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
 
-        Invoke-WebRequest https://api.godaddy.com/v1/domains/$Domain/records -Method Patch -Headers $headers -Body $body -UseBasicParsing | ConvertFrom-Json
+        $uri = "https://api.godaddy.com/v1/domains/$Domain/records"
+        Invoke-WebRequest -Uri $uri -Method Patch -Headers $headers -Body $body -UseBasicParsing | ConvertFrom-Json
 
-        Get-GoDaddyDNS -Domain $Domain -Type $Type -Name $Name
+        Get-GoDaddyDNS -Domain $Domain | Where-Object {$_.type -eq $Type -and $_.name -eq $Name}
     }
     End
     {
