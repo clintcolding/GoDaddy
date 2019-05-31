@@ -44,27 +44,6 @@ A     @              192.30.252.154                                             
 CNAME www            @                                                                    3600
 ```
 
-You can also filter by type:
-
-``` console
-PS C:\> Get-GoDaddyDNS clintcolding.com -Type A
-
-type name data           ttl
----- ---- ----           ---
-A    @    192.30.252.153 600
-A    @    192.30.252.154 600
-```
-
-Or by type **AND** name:
-
-``` console
-PS C:\> Get-GoDaddyDNS clintcolding.com -Type CNAME -Name 'www'
-
-type  name data  ttl
-----  ---- ----  ---
-CNAME www  @    3600
-```
-
 ### Using Add-GoDaddyDNS
 
 `Add-GoDaddyDNS` allows you to create new DNS records. Below we'll create a new A record for test.clintcolding.com with an Data of 10.10.10.10:
