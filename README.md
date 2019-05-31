@@ -97,19 +97,6 @@ type name data         ttl
 A    test 10.10.10.12 3600
 ```
 
-And confirmed with `Get-GoDaddyDNS`:
-
-``` console
-PS C:\> Get-GoDaddyDNS clintcolding.com
-
-type  name           data                                                                  ttl
-----  ----           ----                                                                  ---
-A     @              192.30.252.153                                                        600
-A     @              192.30.252.154                                                        600
-A     test           10.10.10.12                                                          3600
-CNAME www            @                                                                    3600
-```
-
 ### Adding and Setting SRV Records
 
 When adding or setting SRV records, additional parameters are required. (Service, Priority, Protocol, Port, Weight)
@@ -139,5 +126,5 @@ PS C:\> Get-GoDaddyDNS clintcolding.com
 
 type  name  data                              ttl
 ----  ----  ----                              ---
-SRV   test  targethost.test.clintcolding.com  3600
+SRV   test  targethost.clintcolding.com  3600
 ```
