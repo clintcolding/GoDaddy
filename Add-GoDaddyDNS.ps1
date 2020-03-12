@@ -36,7 +36,7 @@ function Add-GoDaddyDNS
         
         [Parameter(Position=4)]
         [int]$TTL=3600,
-        
+
         [Parameter(Position=5)]
         [int]$Priority=0
     )
@@ -146,7 +146,7 @@ function Add-GoDaddyDNS
         }
         #---- If MX, build MX record ----#
         if ($Type -eq "MX") {
-            $record = @{data="$Data";priority=$Priority;ttl=$TTL}
+            $record = @{type="$Type";name="$Name";data="$Data";priority=$Priority;ttl=$TTL}
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
         #---- Build standard record ----#
