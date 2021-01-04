@@ -22,7 +22,15 @@ function Get-GoDaddyDNS
     )
 
     Begin {
-        $apiKey = Import-Csv "$PSScriptRoot\apiKey.csv"
+        $apiKeySecure = Import-Csv "$PSScriptRoot\apiKey.csv"
+
+        # Decrypt API Key
+        $apiKey = @(
+            [PSCustomObject]@{
+                Key = [System.Net.NetworkCredential]::new("", ($apiKeySecure.Key | ConvertTo-SecureString)).Password
+                Secret = [System.Net.NetworkCredential]::new("", ($apiKeySecure.Secret | ConvertTo-SecureString)).Password
+            }
+        )
     }
     Process {
         #---- Build authorization header ----#

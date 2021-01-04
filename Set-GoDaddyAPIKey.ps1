@@ -31,14 +31,18 @@ function Set-GoDaddyAPIKey
     }
     Process
     {
-        $apiKey = @(
+        # Encrypt API Key
+        $SecureKey = $Key | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString
+        $SecureSecret = $Secret | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString
+
+        $apiKeySecure = @(
             [PSCustomObject]@{
-                Key = "$Key"
-                Secret = "$Secret"
+                Key = "$SecureKey"
+                Secret = "$SecureSecret"
             }
         )
         
-        $apiKey | Export-Csv -Path "$PSScriptRoot\apiKey.csv"
+        $apiKeySecure | Export-Csv -Path "$PSScriptRoot\apiKey.csv"
     }
     End
     {

@@ -26,7 +26,18 @@ function Get-GoDaddyAPIKey
         ## Test if apiKey.csv exists, if so, return the contents.
 
         if ((Test-Path "$PSScriptRoot\apiKey.csv") -eq $True) {
-            Import-Csv "$PSScriptRoot\apiKey.csv"
+            $apiKeySecure = Import-Csv "$PSScriptRoot\apiKey.csv"
+
+            # Decrypt API Key
+            $apiKey = @(
+                [PSCustomObject]@{
+                    Key = [System.Net.NetworkCredential]::new("", ($apiKeySecure.Key | ConvertTo-SecureString)).Password
+                    Secret = [System.Net.NetworkCredential]::new("", ($apiKeySecure.Secret | ConvertTo-SecureString)).Password
+                }
+            )
+
+            # Return decrypted key info
+            $apiKey
         }
 
         ## If Test-Path fails, write the following warning:
