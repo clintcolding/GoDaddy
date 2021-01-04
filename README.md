@@ -44,6 +44,40 @@ A     @              192.30.252.154                                             
 CNAME www            @                                                                    3600
 ```
 
+### Using Get-GoDaddyDomain
+
+Once your keys are configured you can use `Get-GoDaddyDomain` to get information about all your domains or a specific domain:
+
+``` console
+
+# Gets information on up to 50 domains by default
+PS C:\> Get-GoDaddyDomain
+
+createdAt           : 2018-05-08T11:01:20.000Z
+domain              : mygreatdomain.com
+domainId            : 1111111111
+...
+
+# Get information on up to 200 domains associated with API credentials and returns just a list of domain names
+PS C:\> Get-GoDaddyDomain -Limit 200 | Select-Object Domain
+
+domain
+------
+adomain.com
+bdomain.com
+cdomain.ski
+
+# Get information for a specific domain
+PS C:\> Get-GoDaddyDomain -Domain mydomain.com
+
+authCode            : 123456ABCDEF
+contactAdmin        : @{addressMailing=; email=admin@mydomain.com; fax=; nameFirst=John; nameLast=Smith; organization=My Organization; phone=+1.1234567890}
+contactBilling      : @{addressMailing=; email=admin@mydomain.com; fax=; nameFirst=John; nameLast=Smith; organization=My Organization; phone=+1.1234567890}
+domain              : mydomain.com
+...
+
+```
+
 ### Using Add-GoDaddyDNS
 
 `Add-GoDaddyDNS` allows you to create new DNS records. Below we'll create a new A record for test.clintcolding.com with an Data of 10.10.10.10:
