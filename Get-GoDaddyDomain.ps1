@@ -4,19 +4,19 @@
 .DESCRIPTION
    Retrieves Domain records for a domain hosted with GoDaddy.
 .EXAMPLE
-   Get-GoDaddyDomains
+   Get-GoDaddyDomain
    
    This example will return information on up to 50 domains associated with the API credentials
 .EXAMPLE
-   Get-GoDaddyDomains -Limit 200 | Select-Object Domain
+   Get-GoDaddyDomain -Limit 200 | Select-Object Domain
    
    This example will return a list of up 200 domains associated with the API credentials
 .EXAMPLE
-   Get-GoDaddyDNS -Domain google.com
+   Get-GoDaddyDomain -Domain mydomain.com
 
    This example will return information about the specified domain
 #>
-function Get-GoDaddyDomains
+function Get-GoDaddyDomain
 {
     Param
     (
