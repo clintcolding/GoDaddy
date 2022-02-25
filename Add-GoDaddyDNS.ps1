@@ -35,7 +35,10 @@ function Add-GoDaddyDNS
         [string]$Data,
         
         [Parameter(Position=4)]
-        [int]$TTL=3600
+        [int]$TTL=3600,
+
+        [Parameter(Position=5)]
+        [int]$Priority=0
     )
 
     DynamicParam {
@@ -147,6 +150,11 @@ function Add-GoDaddyDNS
         #---- If SRV, build SRV record ----#
         if ($Type -eq "SRV") {
             $record = @{type="$Type";name="$Name";data="$Data";ttl=$TTL;priority=$PSBoundParameters.Priority;service="{0}" -f $PSBoundParameters.Service;protocol="{0}" -f $PSBoundParameters.Protocol;port=$PSBoundParameters.Port;weight=$PSBoundParameters.Weight}
+            $body = "[" + (ConvertTo-Json $record) + "]"
+        }
+        #---- If MX, build MX record ----#
+        if ($Type -eq "MX") {
+            $record = @{type="$Type";name="$Name";data="$Data";priority=$Priority;ttl=$TTL}
             $body = "[" + (ConvertTo-Json $record) + "]"
         }
         #---- Build standard record ----#
